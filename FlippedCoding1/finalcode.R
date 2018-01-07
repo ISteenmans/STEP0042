@@ -1,0 +1,1 @@
+completioncode <- function(x){as.hexmode(x); completioncode <<- NULL}
