@@ -1,0 +1,258 @@
+- Class: meta
+  Course: STEPGP06
+  Lesson: Flipped Coding 2
+  Author: Michael Veale
+  Type: Standard
+  Organization: UCL STEaPP (includes GNU content from https://github.com/swirldev/swirl_courses. Distributed GNU GPL v3)
+  Version: 1
+
+
+- Class: text
+  Output: In this lesson, you'll learn more about how to manipulate data using dplyr. dplyr is a fast and powerful R package written by Hadley Wickham and Romain Francois that provides a consistent and concise grammar for manipulating tabular data.
+
+- Class: text
+  Output: "We're going to be working with a dataset of flights in New York in 2013. I've loaded it for you already."
+  
+- Class: cmd_question
+  Output: "You can see it by typing 'flights' at the command line"
+  CorrectAnswer: flights
+  AnswerTests: omnitest(correctExpr='flights')
+  Hint: Type flights at the command line.
+  
+- Class: cmd_question
+  Output: Use dim() to look at the dimensions of flights.
+  CorrectAnswer: dim(flights)
+  AnswerTests: omnitest(correctExpr='dim(flights)')
+  Hint: dim(flights) will give you the dimensions of the dataset.
+
+- Class: cmd_question
+  Output: Now use head() to preview the data.
+  CorrectAnswer: head(flights)
+  AnswerTests: omnitest(correctExpr='head(flights)')
+  Hint: head(flights) will show you the first six rows of mydf.
+
+- Class: cmd_question
+  Output: And tail() to show you the end
+  CorrectAnswer: tail(flights)
+  AnswerTests: omnitest(correctExpr='tail(flights)')
+  Hint: tail(flights) will show you the last six rows of mydf.
+
+- Class: cmd_question
+  Output: The dplyr package was automatically installed (if necessary) and loaded at the beginning of this lesson. Normally, this is something you would have to do on your own. Just to build the habit, type library(dplyr) now to load the package again.
+  CorrectAnswer: library(dplyr)
+  AnswerTests: omnitest(correctExpr='library(dplyr)')
+  Hint: Use library(dplyr) to load the dplyr package.
+
+- Class: text
+  Output: 'According to the "Introduction to dplyr" vignette written by the package authors, "The dplyr philosophy is to have small functions that each do one thing well." Specifically, dplyr supplies five ''verbs'' that cover most fundamental data manipulation tasks: select(), filter(), arrange(), mutate(), and summarize().'
+
+- Class: cmd_question
+  Output: Use ?select to pull up the documentation for the first of these core functions.
+  CorrectAnswer: ?select
+  AnswerTests: omnitest(correctExpr='?select')
+  Hint: ?select will display the documentation for dplyr's select() function.
+  
+- Class: text
+  Output: Help files for the other functions are accessible in the same way.
+
+- Class: cmd_question
+  Output: As may often be the case, particularly with larger datasets, we are only interested in some of the variables. Maybe we want to know more about delays per day. Use select(flights, year, month, day, dep_delay) to select only those variables.
+  CorrectAnswer: select(flights, year, month, day, dep_delay)
+  AnswerTests: omnitest(correctExpr='select(flights, year, month, day, dep_delay)')
+  Hint: Type select(flights, year, month, day, dep_delay)
+
+- Class: text
+  Output: "You might remember seeing the $ sign in the class. This is used to pull a vector out from a data frame. When you're using dplyr verbs, dplyr 'remembers' the data frame that you're using, so you don't need flights$ all the time before the name of the variable(s) you care about."
+
+- Class: text
+  Output: Also, note that the columns are returned to us in the order we specified.
+
+- Class: cmd_question
+  Output: Recall that in R, the `:` operator provides a compact notation for creating a sequence of numbers. For example, try 5:20.
+  CorrectAnswer: 5:20
+  AnswerTests: omnitest(correctExpr='5:20')
+  Hint: Type 5:20 to see how `:` can be used to create a sequence of numbers.
+
+- Class: cmd_question
+  Output: Normally, this notation is reserved for numbers, but select() allows you to specify a sequence of columns this way, which can save a bunch of typing. Use select(flights, year:dep_delay) to select all columns starting from year and ending with dep_delay.
+  CorrectAnswer: select(flights, year:dep_delay)
+  AnswerTests: omnitest(correctExpr='select(flights, year:dep_delay)')
+  Hint: select(flights, year:dep_delay) will select all columns from year to dep_delay (left to right).
+
+- Class: cmd_question
+  Output: We can also select the same columns in reverse order. Give it a try.
+  CorrectAnswer: select(flights, dep_delay:year)
+  AnswerTests: omnitest(correctExpr='select(flights, dep_delay:year)')
+  Hint: Try select(flights, dep_delay:year)
+
+- Class: cmd_question
+  Output: Print the entire dataset again, just to remind yourself of what it looks like. You can do this at anytime during the lesson.
+  CorrectAnswer: flights
+  AnswerTests: omnitest(correctExpr='flights')
+  Hint: Print flights to the console to remind yourself what it looks like.
+
+- Class: cmd_question
+  Output: Instead of specifying the columns we want to keep, we can also specify the columns we want to throw away. To see how this works, do select(flights, -carrier) to omit the carrier column.
+  CorrectAnswer: select(flights, -carrier)
+  AnswerTests: omnitest(correctExpr='select(flights, -carrier)')
+  Hint: Use select(flights, -carrier) to get rid of the carrier column.
+
+- Class: text
+  Output: Now that you know how to select a subset of columns using select(), a natural next question is "How do I select a subset of rows?" That's where the filter() function comes in.
+
+- Class: cmd_question
+  Output: Use filter(flights, origin == "JFK") to select all rows where the plane is taking off from JFK airport. Be sure to use two equals signs side-by-side!
+  CorrectAnswer: filter(flights, origin == "JFK")
+  AnswerTests: omnitest(correctExpr='filter(flights, origin == "JFK")')
+  Hint: filter(flights, origin == "JFK") will give you only those rows for which the plane is heading off from JFK.
+
+- Class: text
+  Output: Again, note that filter() recognizes 'origin' as a column of flights, without you having to explicitly specify flights$origin.
+
+- Class: text
+  Output: The == operator asks whether the thing on the left is equal to the thing on the right. If yes, then it returns TRUE. If no, then FALSE. In this case, origin is an entire vector (column) of values, so origin == "JFK" returns a vector of TRUEs and FALSEs. filter() then returns only the rows of flights corresponding to the TRUEs.
+
+- Class: cmd_question
+  Output: You can specify as many conditions as you want, separated by commas. For example filter(flights, month == 1, origin == "JFK") will return all flights from JFK in the dataset from January
+  CorrectAnswer: filter(flights, month == 1, origin == "JFK")
+  AnswerTests: any_of_exprs('filter(flights, month == 1, origin == "JFK")', 'filter(flights, origin == "JFK", month == 1)')
+  Hint: Try filter(flights, month == 1, origin == "JFK")
+  
+- Class: cmd_question
+  Output: The conditions passed to filter() can make use of any of the standard comparison operators. Pull up the relevant documentation with ?Comparison (that's an uppercase C).
+  CorrectAnswer: ?Comparison
+  AnswerTests: omnitest(correctExpr='?Comparison')
+  Hint: ?Comparison will pull up the relevant help file.
+
+- Class: cmd_question
+  Output: Edit your previous call to filter() to instead return rows corresponding to flights from La Guardia airport (LGA), taking place in August. The up arrow on your keyboard may come in handy here. Don't forget your double quotes!
+  CorrectAnswer: filter(flights, month == 8, origin == "LGA")
+  AnswerTests: any_of_exprs('filter(flights, month == 8, origin == "LGA")', 'filter(flights, origin == "LGA", month == 8)')
+  Hint: Try filter(flights, month == 8, origin == "LGA")
+  
+- Class: cmd_question
+  Output: Our last two calls to filter() requested all rows for which some condition AND another condition were TRUE. We can also request rows for which EITHER one condition OR another condition are TRUE. For example, filter(flights, carrier == "AA" | carrier == "UA") will gives us all rows for which the carrier is EITHER American Airlines or United Airlines. Give it a try
+  CorrectAnswer: filter(flights, carrier == "AA" | carrier == "UA")
+  AnswerTests: any_of_exprs('filter(flights, carrier == "AA" | carrier == "UA")', 'filter(flights, carrier == "AA" | carrier == "UA")')
+  Hint: filter(flights, carrier == "AA" | carrier == "UA") will return all rows for which the carrier is either AA or UA. The `|` symbol (called a pipe operator) probably shares a key with the backslash on your keyboard.
+
+- Class: cmd_question
+  Output: "'Now, use filter() to fetch all rows for which the departure delay is strictly greater than (>) 60 minutes. Ouch!"
+  CorrectAnswer: filter(flights, dep_delay > 60)
+  AnswerTests: any_of_exprs('filter(flights, dep_delay > 60)', 'filter(flights, dep_delay > 60)')
+  Hint:  Try filter(flights, dep_delay > 60)
+
+- Class: text
+  Output: We've seen how to select a subset of columns and rows from our dataset using select() and filter(), respectively. Inherent in select() was also the ability to arrange our selected columns in any order we please.
+
+- Class: text
+  Output: Sometimes we want to order the rows of a dataset according to the values of a particular variable. This is the job of arrange().
+
+- Class: cmd_question
+  Output: To see how arrange() works, let's first take a subset of flights. select() all columns from month through dep_delay and store the result in flights2.
+  CorrectAnswer: flights2 <- select(flights, month:dep_delay)
+  AnswerTests: omnitest('flights2 <- select(flights, month:dep_delay)')
+  Hint: Use select(flights, month:dep_delay) to select all columns from size through ip_id. Store the result in flights2, using a <- operator at the beginning.
+
+- Class: cmd_question
+  Output: Now, to order the ROWS of flights2 so that dep_delay is in ascending order (from small to large --- so negative delays will be first), type arrange(flights2, dep_delay).
+  CorrectAnswer: arrange(flights2, dep_delay)
+  AnswerTests: omnitest('arrange(flights2, dep_delay)')
+  Hint: arrange(flights2, dep_delay) will order the rows of flights2 from smallest delay to largest delay.
+  
+- Class: text
+  Output: Who ever heard of a plane leaving more than half an hour early?
+
+- Class: cmd_question
+  Output: To do the same, but in descending order, change the second argument to desc(dep_delay), where desc() stands for 'descending'. Go ahead.
+  CorrectAnswer: arrange(flights2, desc(dep_delay))
+  AnswerTests: omnitest('arrange(flights2, desc(dep_delay))')
+  Hint: arrange(flights2, desc(dep_delay)) will order the rows of our dataset from largest to smallest delay
+
+- Class: cmd_question
+  Output: We can also arrange the data according to the values of multiple variables. For example, arrange(flights2, month, desc(dep_delay)) will first arrange by month names (ascending alphabetically), then by the delay (descending from the largest). Try that!
+  CorrectAnswer: arrange(flights2, month, desc(dep_delay))
+  AnswerTests: omnitest('arrange(flights2, month, desc(dep_delay))')
+  Hint: Try arrange(flights2, month, desc(dep_delay)).
+
+- Class: text
+  Output: It's common to create a new variable based on the value of one or more variables already in a dataset. The mutate() function does exactly this.
+
+- Class: cmd_question
+  Output: Select the variables year, month, day, carrier and flight (in that order), from the original flights dataset, and put them in a new data frame, flights3.
+  CorrectAnswer: flights3 <- select(flights, year, month, day, carrier, flight)
+  AnswerTests: omnitest('flights3 <- select(flights, year, month, day, carrier, flight)')
+  Hint: Try flights3 <- select(flights, year, month, day, carrier, flight)
+
+- Class: text
+  Output: Now, you'll know that often, flights have their carrier appended to the beginning of their flight number. That means instead of having two columns, one containing the carrier UA, AA, etc, and the other the flight number, we want them to be combined in a single character string.
+
+- Class: cmd_question
+  Output:  You can use the command paste0 to combine vectors together. The 0 in paste0 means 'no spaces' — unlike paste(), which defaults to include spaces in the middle. Try paste0(c("A", "B", "C"), 1:3)
+  CorrectAnswer: paste0(c("A", "B", "C"), 1:3)
+  AnswerTests: omnitest('paste0(c("A", "B", "C"), 1:3)')
+  Hint: Try paste0(c("A", "B", "C"), 1:3)
+
+- Class: cmd_question
+  Output: It's taken the two vectors and pushed them together. Now we want to do this to our flight carriers and numbers. Have a look at the dataset again by typing flights3 to see what you'll be combining
+  CorrectAnswer: flights3
+  AnswerTests: omnitest('flights3')
+  Hint: Just type flights3
+
+- Class: cmd_question
+  Output: We can make a new column by using mutate, and naming it inside. Mutate needs flights3 as its first argument, then the name of the column (call it FlightNumber), an equals sign, then the expression for combining the two columns together. Try it now.
+  CorrectAnswer: mutate(flights3, FlightNumber = paste0(carrier, flight))
+  AnswerTests: omnitest(' mutate(flights3, FlightNumber = paste0(carrier, flight))')
+  Hint: Try mutate(flights3, FlightNumber = paste0(carrier, flight))
+
+
+- Class: text
+  Output: Super. Now, one of the most important things you can do in analysis is to make summary statistics, which break down a dataset into aggregated chunks.
+  
+  
+- Class: text
+  Output: Using dplyr in R, you do this by first grouping data with group_by(), then summarising it over all combinations of the variables you are grouping it by using summarise()
+
+  
+- Class: text
+  Output: Lets use this to work out the average delay for each route in 2013.
+  
+  
+- Class: text
+  Output: To do this best, we'll use something called chaining. Until now, we've always had to put "flights" or an equivalent as the first argument of a dplyr verb.
+
+- Class: text
+  Output: When you use chaining, you start by typing the dataset name, then follow by this strange character %>%, then by the dplyr verb. BUT when you use the verb, you don't need to put the dataset name at the beginning.
+
+- Class: text
+  Output: So, filter(flights, (dep_delay > 60) is the same as flights %>% filter(dep_delay > 60)
+
+- Class: text
+  Output: But this means you can also do longer chains, like flights %>% filter(dep_delay > 60) %>% arrange(month, desc(dep_delay)) %>% select(month, day, dep_delay, carrier) --- all in one go! This command would take the flights dataset, filter it, arrange it so it displays each month from January, with the highest delay in each month first, and then choose only four columns for better focus! 
+
+- Class: text
+  Output: When you use the group_by() verb, you generally use it as part of a chain. 
+
+- Class: cmd_question
+  Output: Take the flights dataset, group it by carrier, and calculate the mean delay. You'll first need to call flights, then chain it to group_by, then to summarise. Use mean_delay = mean(dep_delay, na.rm = TRUE) inside summarise to call the new column "mean_delay", and to get rid of any pesky NAs.
+  CorrectAnswer: flights %>% group_by(carrier) %>% summarise(mean_delay = mean(dep_delay, na.rm = TRUE))
+  AnswerTests: omnitest('flights %>% group_by(carrier) %>% summarise(mean_delay = mean(dep_delay, na.rm = TRUE))')
+  Hint: This is a big one! Try to put it together bit by bit, with a %>% inbetween flights, then group_by(carrier), then summarise(mean_delay = mean(dep_delay, na.rm = TRUE))
+
+- Class: text
+  Output: That's great! Summarisation is a really powerful tool we'll practice more of as we go forward in the course.
+  
+- Class: figure
+  Output: This lesson is complete! But before you leave, you'll need to generate a code to show you've completed it, and post it on Moodle. 
+  Figure: finalcode.R
+  FigureType: new
+  
+- Class: cmd_question
+  Output: Get your UCL student number (it's on your card, and your online account, and usually has 7 digits), and write it into the function completioncode(). For example, if my number was 1007893, I'd call completioncode(1007893). Make a note of this number! 
+  CorrectAnswer: completioncode(0000000)
+  AnswerTests: expr_uses_func("completioncode")
+  Hint: Type completioncode(MYSTUDENTNUMBER), replacing the text with your actual student number. Write down the result! If you are having trouble, screenshot this page and email it to Michael.
+
+- Class: text
+  Output: Now, save that code and go on Moodle, and enter it in the indicated location - Flipped Coding 2 Completion Codes Assignment.
+
