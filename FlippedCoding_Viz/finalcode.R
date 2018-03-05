@@ -1,0 +1,1 @@
+print(as.hexmode(as.numeric(readline(prompt = "Enter student number: ")) + 1))

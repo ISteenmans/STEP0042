@@ -1,0 +1,160 @@
+- Class: meta
+  Course: STEPGP06
+  Lesson: Flipped Coding Visualisation
+  Author: Michael Veale
+  Type: Standard
+  Organization: UCL STEaPP
+  Version: 1
+
+- Class: text
+  Output: Hi everyone! Welcome to Flipped Coding session for the Data Visualisation session.
+  
+- Class: text
+  Output: In R, one of the most powerful tools for making plots is a packages called ggplot2.
+    
+- Class: text
+  Output: ggplot2 stands for the grammar of graphics, and it is a structured, flexible way of writing code to make graphs. Once you learn it, it is very easy to see how graphs are made up of different component parts, and reproduce even complex graphs you see in reports, newspapers or text in your own work.
+
+- Class: text
+  Output: In the flipped coding session, we're going to use a simple, common dataset called iris to explore the basic functionality of ggplot2.
+
+- Class: cmd_question
+  Output: iris is a dataset of measurements of, well, iris flowers, made by the seminal statisician Ronald Fisher around a century ago. It's built into R, so just type iris to have a look at it.
+  CorrectAnswer: iris
+  AnswerTests: omnitest(correctExpr='iris')
+  Hint: Type iris and press Enter.
+  
+- Class: cmd_question
+  Output: How many variables are there in the iris dataset?
+  CorrectAnswer: 5
+  AnswerTests: omnitest(correctExpr='5')
+  Hint: Count the columns in iris.
+
+  
+- Class: cmd_question
+  Output: Before we use the ggplot2 package we have to load it. Although it's very common, it sits outside the default R environment. Type library(ggplot2) to load it
+  CorrectAnswer: library(ggplot2)
+  AnswerTests: omnitest(correctExpr='library(ggplot2)')
+  Hint: Type library(ggplot2) to load it. If it's not working, try install.packages("ggplot2") first, although it should already be installed.
+
+- Class: text
+  Output: The anatomy of a plot is a very logical one, based on the idea of adding different components together until you get the plot you want. This means you can make a great plot with just one line of code!
+
+
+- Class: cmd_question
+  Output:   The first component is the command ggplot(). The main thing you use this for is to load the data into the graph. Type ggplot(data = iris)
+  CorrectAnswer: ggplot(data = iris)
+  AnswerTests: omnitest(correctExpr='ggplot(data = iris)')
+  Hint: Type ggplot(data = iris)
+
+
+- Class: text
+  Output: As you'll have seen, no pretty graph yet. This is because we need to add a geometry layer.
+
+- Class: text
+  Output: The core idea of a geometry layer is to map certain features of the data onto certain 'marks' and 'channels' in the graph.
+
+- Class: text
+  Output: For example, a scatterplot maps numeric data onto points, which are 'marks'.
+
+- Class: text
+  Output: A barchart uses a different kind of mark - a horizontal or vertical rectangle
+
+- Class: text
+  Output: And a linechart uses a different type again, a line connecting different points.
+
+- Class: text
+  Output: Each mark (there are many types!) needs different minimum aesthetics. For example, a two dimensional scatterplot uses x and y as aesthetics. These aesthetics define the mark.
+
+- Class: text
+  Output: A barchart needs x and y aesthetics as well, but x is usually a named variable, not a number.
+
+- Class: text
+  Output: The way you add different geometries in ggplot is through literally adding (with the + sign) a function called geom_XXX() to your ggplot(data = iris) function.
+
+- Class: figure
+  Output: Here is an example of a ggplot plot using geom_bar(). 
+  Figure: fig2.R
+
+- Class: figure
+  Output: Here is a related geom, geom_linerange(), which can be quite flexible. It uses a value on one axis, and both a minimum and a maximum value on another.
+  Figure: fig1.R
+
+- Class: text
+  Output: You replace the XXX with whatever geometry you want to use. In our case, we'll use the 'point' geometry first. That's geom_point().
+
+
+- Class: text
+  Output: We'll try to make a scatter plot with Sepal.Length on the x axis, and Petal.Length on the y axis. You can feed these in without quotes, using x = and y = respectively inside the aes() function, within geom_point.
+
+- Class: cmd_question
+  Output: Type ggplot(data = iris) + geom_point(mapping = aes(???)), but replace the ??? with the call to Sepal.Length and Petal.Length.
+  CorrectAnswer: ggplot(data = iris) + geom_point(aes(x = Sepal.Length, y = Petal.Length))
+  AnswerTests: omnitest(correctExpr='ggplot(data = iris) + geom_point(aes(x = Sepal.Length, y = Petal.Length))')
+  Hint: Type ggplot(data = iris) + geom_point(aes(x = Sepal.Length, y = Petal.Length))
+
+- Class: text
+  Output: Now, there's clearly something going on here. We seem some distinct clusters emerging in the data.
+
+- Class: text 
+  Output: One approach here is to try and chage the color depending on the Species. We can also do that in the call to aes(). Incidentally, we don't really need to write 'mapping =' everytime (as mapping is the first argument to the function, and so just putting aes() alone automatically slots it into the right place).
+
+- Class: cmd_question
+  Output: Try ggplot(data = iris) + geom_point(aes(x = Sepal.Length, y = Petal.Length)), but after mapping x and y , also map color to Species. Don't forget, R is case sensitive!
+  CorrectAnswer: ggplot(data = iris) + geom_point(aes(x = Sepal.Length, y = Petal.Length, color = Species))
+  AnswerTests: omnitest(correctExpr='ggplot(data = iris) + geom_point(aes(x = Sepal.Length, y = Petal.Length, color = Species))')
+  Hint: Type ggplot(data = iris) + geom_point(aes(x = Sepal.Length, y = Petal.Length, color = Species))
+
+
+- Class: text
+  Output: Great. Now we can try and add one more mapping to this plot before it gets too crowded. Perhaps the species differ in width as well as in length. Lets map size of the point to a fourth variable, Petal.Length
+
+- Class: cmd_question
+  Output: To ggplot(data = iris) + geom_point(aes(x = Sepal.Length, y = Petal.Length, color = Species)) , add a fourth mapping, from size to Petal.Width. 
+  CorrectAnswer: ggplot(data = iris) + geom_point(aes(x = Sepal.Length, y = Petal.Length, color = Species, size = Petal.Width))
+  AnswerTests: omnitest(correctExpr='ggplot(data = iris) + geom_point(aes(x = Sepal.Length, y = Petal.Length, color = Species, size = Petal.Width))')
+  Hint: Type ggplot(data = iris) + geom_point(aes(x = Sepal.Length, y = Petal.Length, color = Species, size = Petal.Width))
+
+- Class: text
+  Output: We're going to do one last thing to the iris dataset. What if we want to plot relationships within groups? We've done regression analysis already, and two dimensional regression plots are very easy to do in ggplot2.
+
+- Class: text
+  Output: Our aim, in simple terms, is to get a 'line of best fit' by Species.
+
+- Class: text
+  Output: This requires us to realise that often, what we want to do is to pass the same aesthetics to multiple different types of geometries. In the case we are aiming at, we already have the 'point' geometries, but we *also* want 'line' geometries *on the same graph*.
+
+- Class: text
+  Output: For this reason, you can also put the aes() mapping call into the ggplot() function, rather than in each individual geom_XXX(). This means it will be passed on to all the geometries you add later on, without having to change or re-write it.
+
+- Class: cmd_question
+  Output: Try typing ggplot(data = iris, aes(x = Sepal.Length, y = Petal.Length, color = Species)) + geom_point() , and see what you get (we've removed size, as we don't need it now)
+  CorrectAnswer: ggplot(data = iris, aes(x = Sepal.Length, y = Petal.Length, color = Species)) + geom_point()
+  AnswerTests: omnitest(correctExpr='ggplot(data = iris, aes(x = Sepal.Length, y = Petal.Length, color = Species)) + geom_point()')
+  Hint: Type ggplot(data = iris, aes(x = Sepal.Length, y = Petal.Length, color = Species)) + geom_point()
+
+
+- Class: text
+  Output: It's the same as one of our earlier plots, right?
+
+- Class: text
+  Output: Now to that, we're going to add something further. Adding a regression line takes some statistics, rather than just a mapping of points in our dataset to points on the screen.
+
+- Class: text
+  Output: For that, we need to add a stat_XXX() layer on top of what we have already!
+
+- Class: cmd_question
+  Output: Type ggplot(data = iris, aes(x = Sepal.Length, y = Petal.Length, color = Species)) + geom_point() , and to it, add the function stat_smooth(method = "lm") at the end. "lm" means linear model, and you may remember it from the regression lab.
+  CorrectAnswer: ggplot(data = iris, aes(x = Sepal.Length, y = Petal.Length, color = Species)) + geom_point() + stat_smooth(method = "lm")
+  AnswerTests: omnitest(correctExpr='ggplot(data = iris, aes(x = Sepal.Length, y = Petal.Length, color = Species)) + geom_point() + stat_smooth(method = "lm")')
+  Hint: Type ggplot(data = iris, aes(x = Sepal.Length, y = Petal.Length, color = Species)) + geom_point() + stat_smooth(method = "lm") 
+
+- Class: text
+  Output: Great! The grey ribbons around the lines are confidence intervals. If you can't imagine inverting the direction of the line's slope whilst not letting it go outside the ribbon, you know you have statistical significant.
+
+- Class: text
+  Output: That's all for now! But there's a great deal more you can do with ggplot2, and plenty of online tutorials to help with this. Check out the Moodle page for more resources in this area that can help you explore the different functionalities of the software.
+
+- Class: figure
+  Output: Now, enter your student number here and copy the code that is printed as a result within quotes to the Moodle completion page. 
+  Figure: finalcode.R
