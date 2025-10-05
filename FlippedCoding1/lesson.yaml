@@ -1,6 +1,6 @@
 - Class: meta
-  Course: STEP0020 and STEP0042
-  Lesson: Flipped Coding 1
+  Course: STEP0042
+  Lesson: Flipped Coding 1 - foundations for vectors, logical and subsetting
   Author: Michael Veale & Ine Steenmans
   Type: Standard
   Organization: UCL STEaPP (includes GNU content from https://github.com/swirldev/swirl_courses. Distributed GNU GPL v3)
@@ -134,7 +134,7 @@
   AnswerChoices: a vector of length 3; a single number (i.e a vector of length 1);
     a vector of length 0 (i.e. an empty vector)
   AnswerTests: omnitest(correctVal='a vector of length 3')
-  Hint: 'Think about how R handled the other ''vectorized'' operations: element-by-element.'
+  Hint: 'Think about how R handled the other ''vectorised'' operations: element-by-element.'
 
 - Class: cmd_question
   Output: Print the contents of my_sqrt.
@@ -165,7 +165,7 @@
     vector of length 1); my_div is undefined
   AnswerTests: omnitest(correctVal='The first element of my_div is equal to the first
     element of z divided by the first element of my_sqrt, and so on...')
-  Hint: Think about how R handled the other 'vectorized' operations like `+` and `*`.
+  Hint: Think about how R handled the other 'vectorised' operations like `+` and `*`.
 
 - Class: cmd_question
   Output: Go ahead and print the contents of my_div.
@@ -208,6 +208,9 @@
   Hint: Type c(1, 2, 3, 4) + c(0, 10, 100) to see how R handles adding two vectors,
     when the shorter vector's length does not divide evenly into the longer vector's
     length. Don't worry about assigning the result to a variable.
+
+- Class: text
+  Output: Tip: You can type skip() to move on, play() to experiment (then nxt() to return), main() for the menu, and bye() to save and exit.
     
 - Class: text
   Output: Lets quickly look at a couple of time-saving tricks.
@@ -509,6 +512,9 @@
     to join the elements of my_char together into one continuous character string
     (i.e. a character vector of length 1). We can do this using the paste() function.
 
+- Class: text
+  Output: In Session 3 you built a tiny “age converter” and a summary sentence with paste(). You’ll see the same ideas here (numbers + text).
+  
 - Class: cmd_question
   Output: Type paste(my_char, collapse = " ") now. Make sure there's a space between
     the double quotes in the `collapse` argument. You'll see why in a second.
@@ -618,8 +624,8 @@
   Hint: Remember, only numeric numbers can be coerced into a numeric vector.
 
 - Class: text
-  Output: Dealing with NAs in R can seem frustrating, as for messy data (which much data is!) you can get NAs a lot. But there's a reason for this. R is much stricter about values than, say, Excel, because it stops errors in your analysis. If there's an NA being thrown up in your code, you know there's something fishy going on, and should find it and understand it in order to makee sure it's not contaminating your results!
-  
+  Output: Dealing with NAs (missing values) in R can seem frustrating, as for messy data (which much data is!) you can get NAs a lot. But there's a reason for this. R is much stricter about values than, say, Excel, because it stops errors in your analysis. If there's an NA being thrown up in your code, you know there's something fishy going on, and should find it and understand it in order to make sure it's not contaminating your results!
+
 - Class: text
   Output: Okay, so we've seen how to use numbers, logical statements, and characters in vectors. What we haven't done yet is to see how we can choose and find different values within a vector. This is a really important skill within R!
 
@@ -740,16 +746,30 @@
   Output: Now you know several methods of subsetting data from vectors. Different approaches are best in different scenarios and when in doubt, try it out!
 
 - Class: figure
-  Output: This lesson is complete! But before you leave, you'll need to generate a code to show you've completed it, and post it on Moodle. 
+  Output: This lesson is complete! But before you leave, you'll need to generate a code with your UCL student number to show you've completed it, and post it on Moodle. 
+  Figure: finalcode.R
+  FigureType: new
+
+- Class: figure
+  Output: Final step: generate your completion code from your UCL student number (on your card)
   Figure: finalcode.R
   FigureType: new
 
 - Class: cmd_question
-  Output: Get your UCL student number (it's on your card, and your online account, and usually has 7 digits), and write it into the function completioncode(). For example, if my number was 1007893, I'd call completioncode(1007893). Make a note of this number! 
-  CorrectAnswer: completioncode(0000000)
+  Output: Type completioncode(YOUR_7_DIGIT_NUMBER). Example: completioncode(1007893).
+  CorrectAnswer: completioncode(1234567)
   AnswerTests: expr_uses_func("completioncode")
-  Hint: Type completioncode(MYSTUDENTNUMBER), replacing the text with your actual student number. Write down the result! If you are having trouble, screenshot this page and email it to Michael.
+  Hint: Replace 1234567 with your own 7-digit student number, e.g., completioncode(1XXXXXX).
+  
+- Class: text
+  Output: ✅ Copy your code and paste it in Moodle under “Flipped Coding 1 — Completion Code”.
 
 - Class: text
-  Output: Now, save that code and go on Moodle, and enter it in the indicated location - Flipped Coding 1 Completion Codes Assignment.
+  Output: 📸 If Moodle asks for a screenshot, include the console line showing completioncode(YOURNUMBER) and the printed code.
+  
+- Class: text
+  Output: 💾 Saving & exiting: type bye() to exit and save your progress. To return to the main menu (without exiting R), type main(). You can experiment with play() and resume with nxt(). Your code remains valid once generated.
+
+
+
 
