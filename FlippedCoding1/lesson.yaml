@@ -766,6 +766,11 @@
 
 - Class: text
   Output: 📸 If Moodle asks for a screenshot, include the console line showing completioncode(YOURNUMBER) and the printed code.
+
+- Class: text
+  Output: "🪞 Reflection time: To earn full marks (100%), complete the additional short reflection on Moodle after finishing this activity. 
+           The question asks you to connect what you learned here with the wider course so far. 
+           Aim for about 100 words."
   
 - Class: text
   Output: 💾 Saving & exiting: type bye() to exit and save your progress. To return to the main menu (without exiting R), type main(). You can experiment with play() and resume with nxt(). Your code remains valid once generated.
