@@ -1,13 +1,13 @@
 - Class: meta
-  Course: STEPGP06
+  Course: STEP0020 and STEP0042
   Lesson: Flipped Coding 1
-  Author: Michael Veale
+  Author: Michael Veale & Ine Steenmans
   Type: Standard
   Organization: UCL STEaPP (includes GNU content from https://github.com/swirldev/swirl_courses. Distributed GNU GPL v3)
-  Version: 1
+  Version: 2
 
 - Class: text
-  Output: Hi everyone! Welcome to the first flipped coding activity for Analytic Methods for Public Policy. Good work installing this package. We're going to be primarily learning R *within R*, which is pretty cool. Once you've completed it, you'll get a personalised code to enter in the Moodle assessment field. Whenever you're ready, just hit ENTER to continue.
+  Output: Hi everyone! Welcome to the first flipped coding activity for our analysis module. Good work installing this package. We're going to be primarily learning R *within R*, which is pretty cool. Once you've completed it, you'll need to take a screenshot and paste in the Moodle forum. Whenever you're ready, just hit ENTER to continue.
   
 - Class: cmd_question
   Output: In its simplest form, R can be used as an interactive calculator. Type
