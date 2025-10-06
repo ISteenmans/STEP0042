@@ -151,18 +151,18 @@
   Output: "Great work so far! Let's finish with your completion code."
 
 - Class: figure
-  Output: "Generate your completion code using your UCL student number (7 digits)."
+  Output: "Generate your completion code using your UCL student number (8 digits)."
   Figure: finalcode.R
   FigureType: new
 
 - Class: cmd_question
-  Output: "Type completioncode(YOUR_7_DIGIT_NUMBER). Example: completioncode(1007893)."
+  Output: "Type completioncode(YOUR_8_DIGIT_NUMBER). Example: completioncode(10078932)."
   CorrectAnswer: completioncode(1234567)
   AnswerTests: expr_uses_func("completioncode")
-  Hint: "Replace 1234567 with your own number, e.g. completioncode(1234567)."
+  Hint: "Replace 12345678 with your own number, e.g. completioncode(12345678)."
 
 - Class: text
-  Output: "Copy your code and paste it in Moodle under Flipped Coding 1 Completion Code."
+  Output: "Copy your code and paste it in the Moodle Forum."
 
 - Class: text
   Output: "If Moodle asks for a screenshot, include the console line showing completioncode(YOURNUMBER) and the printed code."
