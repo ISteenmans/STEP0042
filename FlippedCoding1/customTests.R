@@ -12,12 +12,6 @@
       # expression which the user entered, so care must be taken.
 
 # in customTests.R (optional)
-# student_number_test <- function() {expr <- getState()$last_expression
-  ok <- grepl("completioncode\\(", expr) && grepl("\\b\\d{8}\\b", expr)
-  if (!ok) {
-    cat("Please call completioncode() with your 8-digit number, e.g. completioncode(12345678).\n")
-    return(FALSE)
-  }
-  TRUE
-}
+# student_number_test <- function() {expr <- getState()$last_expression ok <- grepl("completioncode\\(", expr) && grepl("\\b\\d{8}\\b", expr) if (!ok) {
+    cat("Please call completioncode() with your 8-digit number, e.g. completioncode(12345678).\n") return(FALSE)}TRUE}
 
