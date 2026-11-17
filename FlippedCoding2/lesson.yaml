@@ -1,7 +1,7 @@
 - Class: meta
   Course: STEP0042
   Lesson: Flipped Coding 2
-  Author: Michael Veale
+  Author: Michael Veale; revised by Ine Steenmans, November 2026
   Type: Standard
   Organization: UCL STEaPP (includes GNU content from https://github.com/swirldev/swirl_courses. Distributed GNU GPL v3)
   Version: 1
@@ -243,16 +243,16 @@
   Output: That's great! Summarisation is a really powerful tool we'll practice more of as we go forward in the course.
   
 - Class: figure
-  Output: This lesson is complete! But before you leave, you'll need to generate a code to show you've completed it, and post it on Moodle. 
+  Output: This lesson is complete! Before you leave, generate the code that shows you completed it. You will take a screenshot of it for Task 2.
   Figure: finalcode.R
   FigureType: new
   
 - Class: cmd_question
-  Output: Get your UCL student number (it's on your card, and your online account, and usually has 7 digits), and write it into the function completioncode(). For example, if my number was 1007893, I'd call completioncode(1007893). Make a note of this number! 
-  CorrectAnswer: completioncode(0000000)
+  Output: Write your 8-digit UCL student number (it is on your card and your online account) into the function completioncode(). For example, if your number were 12345678, you would type completioncode(12345678).
+  CorrectAnswer: completioncode(00000000)
   AnswerTests: expr_uses_func("completioncode")
-  Hint: Type completioncode(MYSTUDENTNUMBER), replacing the text with your actual student number. Write down the result! If you are having trouble, screenshot this page and email it to Michael.
+  Hint: Type completioncode(YOURSTUDENTNUMBER), replacing the text with your actual 8-digit student number. If it does not work, take a screenshot of this page and post it in the STEP0042 module forum.
 
 - Class: text
-  Output: Now, save that code and go on Moodle, and enter it in the indicated location - Flipped Coding 2 Completion Codes Assignment.
+  Output: Now take a screenshot that shows the command and the code it printed, and keep it for your Task 2 submission. Well done.
 
