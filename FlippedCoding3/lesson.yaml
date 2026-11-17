@@ -1,0 +1,225 @@
+- Class: meta
+  Course: STEP0042
+  Lesson: FlippedCoding3
+  Author: Ine Steenmans
+  Type: Standard
+  Organization: UCL STEaPP (structure after the swirldev Exploratory Data Analysis course, GNU GPL v3)
+  Version: '1'
+- Class: text
+  Output: 'In this lesson you draw graphs from data in R with ggplot2, a package written by Hadley Wickham. It is built on an idea called the grammar of graphics, from Leland Wilkinson: every graph, however elaborate, is made from the same few parts. Learn the parts once and you can build any graph. This is the grammar from Sessions 13 and 14, one step at a time, at your own pace.'
+- Class: text
+  Output: The data is the gapminder table we used in class. It comes from the Gapminder Foundation, the Swedish organisation behind Hans Rosling's moving bubble charts of health and wealth, packaged for R by Jenny Bryan. 142 countries, every five years from 1952 to 2007, with life expectancy, population and GDP per person for each.
+- Class: text
+  Output: One rule for this lesson. Most steps describe what to do and name the pieces; they do not show you the finished line. Write it yourself. A wrong attempt gets you a hint with more detail; after a second wrong attempt you can type skip() to see the answer and move on. The point is the writing, not the copying.
+- Class: text
+  Output: At the end you will save a picture file, and R saves into one folder at a time, the working directory. Set it first, with the mouse, in the Files pane at the bottom right. Browse to your STEP0042 folder, open it, then click the cog and choose Set As Working Directory.
+- Class: cmd_question
+  Output: Do that now. RStudio types a setwd() command into the console for you. That command is the answer to this step, so do it even if you think you are already in the right place.
+  CorrectAnswer: setwd("the path to your STEP0042 folder")
+  AnswerTests: expr_uses_func("setwd")
+  Hint: Files pane, bottom right. Browse to your STEP0042 folder, open it, then the cog, then Set As Working Directory. Or type it yourself, for example setwd("~/Documents/STEP0042"), with your own folder name in the quotes.
+- Class: cmd_question
+  Output: Check it. Ask R where it is working. The answer is the path to your folder.
+  CorrectAnswer: getwd()
+  AnswerTests: omnitest(correctExpr='getwd()')
+  Hint: Type getwd() with nothing inside the brackets.
+- Class: cmd_question
+  Output: Load the tidyverse, the first line of every script this term. The Conflicts block that prints is a notice, not an error.
+  CorrectAnswer: library(tidyverse)
+  AnswerTests: any_of_exprs('library(tidyverse)', 'library(ggplot2)')
+  Hint: Type library(tidyverse) exactly like that.
+- Class: cmd_question
+  Output: Now load the gapminder package. It holds the table, so there is no file to read in. If R says there is no package called gapminder, type install.packages("gapminder") first, then this line again.
+  CorrectAnswer: library(gapminder)
+  AnswerTests: omnitest(correctExpr='library(gapminder)')
+  Hint: Type library(gapminder). If it is not installed, install.packages("gapminder") first.
+- Class: cmd_question
+  Output: See the column names. You know the function; the table name, gapminder, goes inside the brackets.
+  CorrectAnswer: names(gapminder)
+  AnswerTests: omnitest(correctExpr='names(gapminder)')
+  Hint: names(gapminder)
+- Class: text
+  Output: Six columns. country and continent are words. year runs from 1952 to 2007 in steps of five. lifeExp is life expectancy at birth, in years. pop is people. gdpPercap is GDP per person, in US dollars adjusted for inflation. One row is one country in one year.
+- Class: cmd_question
+  Output: Look at the first six rows.
+  CorrectAnswer: head(gapminder)
+  AnswerTests: omnitest(correctExpr='head(gapminder)')
+  Hint: head(gapminder), the table name inside the brackets.
+- Class: text
+  Output: Afghanistan, 1952 to 1977. The table is sorted by country, then year, so head() shows you one country. Afghanistan's life expectancy in 1952 was 28.8 years.
+- Class: text
+  Output: 'The question for this lesson is the one from Session 13: did the world get healthier as it got richer? To look at one moment, you need one year, and that is a dplyr job before it is a graph job.'
+- Class: cmd_question
+  Output: Keep the 1962 rows only, in a new object called g1962. You met the verb for keeping rows in Session 7; a comparison takes two equals signs. Have a go before you look at the hint.
+  CorrectAnswer: g1962 <- filter(gapminder, year == 1962)
+  AnswerTests: any_of_exprs('g1962 <- filter(gapminder, year == 1962)', 'g1962 <- gapminder %>% filter(year == 1962)', 'g1962 <- filter(gapminder, year == 1962L)', 'g1962 <- gapminder |> filter(year == 1962)')
+  Hint: g1962 <- filter(gapminder, year == 1962) with a double equals sign.
+- Class: cmd_question
+  Output: Check its size.
+  CorrectAnswer: dim(g1962)
+  AnswerTests: omnitest(correctExpr='dim(g1962)')
+  Hint: dim(g1962), the new table's name inside the brackets.
+- Class: text
+  Output: 142 rows and 6 columns, one row per country. Every graph in the next ten minutes is a picture of this table.
+- Class: text
+  Output: The grammar. Every graph answers three questions. Which table is it drawn from (the data)? Which column goes to which visual property, such as the horizontal position, the vertical position, the colour, the size (the mapping, from variables to aesthetics)? And what mark is drawn for each row, a point, a line, a bar (the geom)? ggplot2 asks you exactly those three things, in that order.
+- Class: text
+  Output: The template is ggplot(data, aes(mapping)) + geom_something(). ggplot() names the data and draws nothing. aes() holds the mapping. The geom draws. The parts are joined with a plus sign, not with the pipe. Type the whole thing on one line in this lesson.
+- Class: cmd_question
+  Output: Draw it. Fill the template in. The data is g1962; inside aes(), x = gdpPercap and y = lifeExp; the geom is geom_point(). Write the line, press Enter, and look at the Plots pane.
+  CorrectAnswer: ggplot(g1962, aes(x = gdpPercap, y = lifeExp)) + geom_point()
+  AnswerTests: any_of_exprs('ggplot(g1962, aes(x = gdpPercap, y = lifeExp)) + geom_point()', 'ggplot(data = g1962, mapping = aes(x = gdpPercap, y = lifeExp)) + geom_point()', 'ggplot(g1962, mapping = aes(x = gdpPercap, y = lifeExp)) + geom_point()', 'ggplot(data = g1962, aes(x = gdpPercap, y = lifeExp)) + geom_point()', 'ggplot(g1962, aes(gdpPercap, lifeExp)) + geom_point()', 'ggplot(data = g1962, mapping = aes(gdpPercap, lifeExp)) + geom_point()', 'ggplot(g1962, mapping = aes(gdpPercap, lifeExp)) + geom_point()', 'ggplot(data = g1962, aes(gdpPercap, lifeExp)) + geom_point()')
+  Hint: ggplot(g1962, aes(x = gdpPercap, y = lifeExp)) + geom_point() with a plus sign before geom_point.
+- Class: text
+  Output: '142 points, one per country. Read it before you believe it. One point sits on its own far to the right: Kuwait, at 95,458 dollars a head, with a life expectancy of 60.5 years. Everyone else is squashed into the left-hand tenth of the chart. The lowest point is Afghanistan, at 32 years; the highest is Iceland, at 73.7.'
+- Class: cmd_question
+  Output: Now see what each part does by leaving one out. Write the same line without the geom, so it ends at the closing bracket of aes().
+  CorrectAnswer: ggplot(g1962, aes(x = gdpPercap, y = lifeExp))
+  AnswerTests: any_of_exprs('ggplot(g1962, aes(x = gdpPercap, y = lifeExp))', 'ggplot(data = g1962, mapping = aes(x = gdpPercap, y = lifeExp))', 'ggplot(g1962, mapping = aes(x = gdpPercap, y = lifeExp))', 'ggplot(data = g1962, aes(x = gdpPercap, y = lifeExp))', 'ggplot(g1962, aes(gdpPercap, lifeExp))', 'ggplot(data = g1962, mapping = aes(gdpPercap, lifeExp))', 'ggplot(g1962, mapping = aes(gdpPercap, lifeExp))', 'ggplot(data = g1962, aes(gdpPercap, lifeExp))')
+  Hint: The same command as before, without the + geom_point() at the end.
+- Class: text
+  Output: Axes, a grid, the right ranges, and nothing drawn. ggplot() and aes() set up the frame; the geom puts the marks in it. That is the whole grammar in one blank picture. Each plus sign adds a layer on top of what is there.
+- Class: text
+  Output: 'The squashed chart is a scale problem. Income differences are multiplicative: a country going from 500 to 1,000 dollars has doubled, as has one going from 10,000 to 20,000. A log scale gives each doubling the same width.'
+- Class: cmd_question
+  Output: 'Draw the first plot again and add one more layer after another plus sign: scale_x_log10(), with nothing in its brackets.'
+  CorrectAnswer: ggplot(g1962, aes(x = gdpPercap, y = lifeExp)) + geom_point() + scale_x_log10()
+  AnswerTests: any_of_exprs('ggplot(g1962, aes(x = gdpPercap, y = lifeExp)) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, mapping = aes(x = gdpPercap, y = lifeExp)) + geom_point() + scale_x_log10()', 'ggplot(g1962, mapping = aes(x = gdpPercap, y = lifeExp)) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, aes(x = gdpPercap, y = lifeExp)) + geom_point() + scale_x_log10()', 'ggplot(g1962, aes(gdpPercap, lifeExp)) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, mapping = aes(gdpPercap, lifeExp)) + geom_point() + scale_x_log10()', 'ggplot(g1962, mapping = aes(gdpPercap, lifeExp)) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, aes(gdpPercap, lifeExp)) + geom_point() + scale_x_log10()')
+  Hint: The first plot with + scale_x_log10() on the end.
+- Class: text
+  Output: 'The same 142 points, now spread across the page, and a rising cloud appears: richer countries tend to live longer. Kuwait is still on the right, now as one country among many. Neither chart is the true one. The linear one shows how far Kuwait was from everyone; the log one shows the pattern among the rest. The scale decided what you could see.'
+- Class: text
+  Output: The plot still cannot say who is who. The grammar's answer is to map another column to another aesthetic. Colour is the usual choice for a column of categories, and continent is one.
+- Class: cmd_question
+  Output: Add a third mapping inside aes(), colour = continent, after y = lifeExp, and keep the log scale on the end.
+  CorrectAnswer: ggplot(g1962, aes(x = gdpPercap, y = lifeExp, colour = continent)) + geom_point() + scale_x_log10()
+  AnswerTests: any_of_exprs('ggplot(g1962, aes(x = gdpPercap, y = lifeExp, colour = continent)) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, mapping = aes(x = gdpPercap, y = lifeExp, colour = continent)) + geom_point() + scale_x_log10()', 'ggplot(g1962, mapping = aes(x = gdpPercap, y = lifeExp, colour = continent)) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, aes(x = gdpPercap, y = lifeExp, colour = continent)) + geom_point() + scale_x_log10()', 'ggplot(g1962, aes(x = gdpPercap, y = lifeExp, color = continent)) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, mapping = aes(x = gdpPercap, y = lifeExp, color = continent)) + geom_point() + scale_x_log10()', 'ggplot(g1962, mapping = aes(x = gdpPercap, y = lifeExp, color = continent)) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, aes(x = gdpPercap, y = lifeExp, color = continent)) + geom_point() + scale_x_log10()', 'ggplot(g1962, aes(gdpPercap, lifeExp, colour = continent)) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, mapping = aes(gdpPercap, lifeExp, colour = continent)) + geom_point() + scale_x_log10()', 'ggplot(g1962, mapping = aes(gdpPercap, lifeExp, colour = continent)) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, aes(gdpPercap, lifeExp, colour = continent)) + geom_point() + scale_x_log10()', 'ggplot(g1962, aes(gdpPercap, lifeExp, color = continent)) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, mapping = aes(gdpPercap, lifeExp, color = continent)) + geom_point() + scale_x_log10()', 'ggplot(g1962, mapping = aes(gdpPercap, lifeExp, color = continent)) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, aes(gdpPercap, lifeExp, color = continent)) + geom_point() + scale_x_log10()')
+  Hint: Put colour = continent inside the aes() brackets, after y = lifeExp, then + geom_point() + scale_x_log10(). ggplot2 accepts colour or color.
+- Class: text
+  Output: A legend appeared by itself, because you mapped a variable. Europe sits top right; Africa bottom left; the Americas and Asia are spread between. The mapping decided what the plot could show you. Change the mapping and you change what can be seen.
+- Class: text
+  Output: Mapping is not the same as setting. Inside aes(), colour = continent means let the colour vary with the continent column. Outside aes(), colour = "red" means make every point red. One is a claim about the data; the other is a choice of ink.
+- Class: cmd_question
+  Output: Set a colour instead of mapping one. Go back to only x and y inside aes(), and put colour = "red" inside the brackets of geom_point(), with red in quotes. Keep the log scale.
+  CorrectAnswer: ggplot(g1962, aes(x = gdpPercap, y = lifeExp)) + geom_point(colour = "red") + scale_x_log10()
+  AnswerTests: any_of_exprs('ggplot(g1962, aes(x = gdpPercap, y = lifeExp)) + geom_point(colour = "red") + scale_x_log10()', 'ggplot(data = g1962, mapping = aes(x = gdpPercap, y = lifeExp)) + geom_point(colour = "red") + scale_x_log10()', 'ggplot(g1962, mapping = aes(x = gdpPercap, y = lifeExp)) + geom_point(colour = "red") + scale_x_log10()', 'ggplot(data = g1962, aes(x = gdpPercap, y = lifeExp)) + geom_point(colour = "red") + scale_x_log10()', 'ggplot(g1962, aes(x = gdpPercap, y = lifeExp)) + geom_point(color = "red") + scale_x_log10()', 'ggplot(data = g1962, mapping = aes(x = gdpPercap, y = lifeExp)) + geom_point(color = "red") + scale_x_log10()', 'ggplot(g1962, mapping = aes(x = gdpPercap, y = lifeExp)) + geom_point(color = "red") + scale_x_log10()', 'ggplot(data = g1962, aes(x = gdpPercap, y = lifeExp)) + geom_point(color = "red") + scale_x_log10()', 'ggplot(g1962, aes(gdpPercap, lifeExp)) + geom_point(colour = "red") + scale_x_log10()', 'ggplot(data = g1962, mapping = aes(gdpPercap, lifeExp)) + geom_point(colour = "red") + scale_x_log10()', 'ggplot(g1962, mapping = aes(gdpPercap, lifeExp)) + geom_point(colour = "red") + scale_x_log10()', 'ggplot(data = g1962, aes(gdpPercap, lifeExp)) + geom_point(colour = "red") + scale_x_log10()', 'ggplot(g1962, aes(gdpPercap, lifeExp)) + geom_point(color = "red") + scale_x_log10()', 'ggplot(data = g1962, mapping = aes(gdpPercap, lifeExp)) + geom_point(color = "red") + scale_x_log10()', 'ggplot(g1962, mapping = aes(gdpPercap, lifeExp)) + geom_point(color = "red") + scale_x_log10()', 'ggplot(data = g1962, aes(gdpPercap, lifeExp)) + geom_point(color = "red") + scale_x_log10()')
+  Hint: Put colour = "red" inside geom_point(), not inside aes(), with the word red in quotes.
+- Class: text
+  Output: Every point red, no legend. Now the classic mistake, so you recognise it when you make it.
+- Class: cmd_question
+  Output: Now put colour = "red", in quotes, inside aes() instead, after y = lifeExp, with a plain geom_point() and the log scale. It is deliberately wrong. Look at what you get.
+  CorrectAnswer: ggplot(g1962, aes(x = gdpPercap, y = lifeExp, colour = "red")) + geom_point() + scale_x_log10()
+  AnswerTests: any_of_exprs('ggplot(g1962, aes(x = gdpPercap, y = lifeExp, colour = "red")) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, mapping = aes(x = gdpPercap, y = lifeExp, colour = "red")) + geom_point() + scale_x_log10()', 'ggplot(g1962, mapping = aes(x = gdpPercap, y = lifeExp, colour = "red")) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, aes(x = gdpPercap, y = lifeExp, colour = "red")) + geom_point() + scale_x_log10()', 'ggplot(g1962, aes(x = gdpPercap, y = lifeExp, color = "red")) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, mapping = aes(x = gdpPercap, y = lifeExp, color = "red")) + geom_point() + scale_x_log10()', 'ggplot(g1962, mapping = aes(x = gdpPercap, y = lifeExp, color = "red")) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, aes(x = gdpPercap, y = lifeExp, color = "red")) + geom_point() + scale_x_log10()', 'ggplot(g1962, aes(gdpPercap, lifeExp, colour = "red")) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, mapping = aes(gdpPercap, lifeExp, colour = "red")) + geom_point() + scale_x_log10()', 'ggplot(g1962, mapping = aes(gdpPercap, lifeExp, colour = "red")) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, aes(gdpPercap, lifeExp, colour = "red")) + geom_point() + scale_x_log10()', 'ggplot(g1962, aes(gdpPercap, lifeExp, color = "red")) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, mapping = aes(gdpPercap, lifeExp, color = "red")) + geom_point() + scale_x_log10()', 'ggplot(g1962, mapping = aes(gdpPercap, lifeExp, color = "red")) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, aes(gdpPercap, lifeExp, color = "red")) + geom_point() + scale_x_log10()')
+  Hint: This time colour = "red" goes inside aes(). It is deliberately wrong.
+- Class: text
+  Output: Salmon pink points and a legend with one entry that reads red. You asked ggplot2 to map a variable, so it invented one with a single value named red and gave it the first colour on its palette. When you see a legend with one odd entry, this is why.
+- Class: text
+  Output: A fourth column. Size is the aesthetic for a column of amounts, and pop is one.
+- Class: cmd_question
+  Output: Go back to the plot coloured by continent and add a fourth mapping inside aes(), size = pop.
+  CorrectAnswer: ggplot(g1962, aes(x = gdpPercap, y = lifeExp, colour = continent, size = pop)) + geom_point() + scale_x_log10()
+  AnswerTests: any_of_exprs('ggplot(g1962, aes(x = gdpPercap, y = lifeExp, colour = continent, size = pop)) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, mapping = aes(x = gdpPercap, y = lifeExp, colour = continent, size = pop)) + geom_point() + scale_x_log10()', 'ggplot(g1962, mapping = aes(x = gdpPercap, y = lifeExp, colour = continent, size = pop)) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, aes(x = gdpPercap, y = lifeExp, colour = continent, size = pop)) + geom_point() + scale_x_log10()', 'ggplot(g1962, aes(x = gdpPercap, y = lifeExp, color = continent, size = pop)) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, mapping = aes(x = gdpPercap, y = lifeExp, color = continent, size = pop)) + geom_point() + scale_x_log10()', 'ggplot(g1962, mapping = aes(x = gdpPercap, y = lifeExp, color = continent, size = pop)) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, aes(x = gdpPercap, y = lifeExp, color = continent, size = pop)) + geom_point() + scale_x_log10()', 'ggplot(g1962, aes(gdpPercap, lifeExp, colour = continent, size = pop)) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, mapping = aes(gdpPercap, lifeExp, colour = continent, size = pop)) + geom_point() + scale_x_log10()', 'ggplot(g1962, mapping = aes(gdpPercap, lifeExp, colour = continent, size = pop)) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, aes(gdpPercap, lifeExp, colour = continent, size = pop)) + geom_point() + scale_x_log10()', 'ggplot(g1962, aes(gdpPercap, lifeExp, color = continent, size = pop)) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, mapping = aes(gdpPercap, lifeExp, color = continent, size = pop)) + geom_point() + scale_x_log10()', 'ggplot(g1962, mapping = aes(gdpPercap, lifeExp, color = continent, size = pop)) + geom_point() + scale_x_log10()', 'ggplot(data = g1962, aes(gdpPercap, lifeExp, color = continent, size = pop)) + geom_point() + scale_x_log10()')
+  Hint: Add size = pop inside aes(), after colour = continent.
+- Class: text
+  Output: 'Two large circles stand out in Asia: China, with 666 million people in 1962, and India, with 454 million. Large circles hide the points behind them, which is called overplotting. The fix is to make the points see-through, and transparency is a setting, not a mapping, so it goes in the geom.'
+- Class: cmd_question
+  Output: The same plot, with alpha = 0.5 inside the brackets of geom_point(). alpha runs from 0, invisible, to 1, solid.
+  CorrectAnswer: ggplot(g1962, aes(x = gdpPercap, y = lifeExp, colour = continent, size = pop)) + geom_point(alpha = 0.5) + scale_x_log10()
+  AnswerTests: any_of_exprs('ggplot(g1962, aes(x = gdpPercap, y = lifeExp, colour = continent, size = pop)) + geom_point(alpha = 0.5) + scale_x_log10()', 'ggplot(data = g1962, mapping = aes(x = gdpPercap, y = lifeExp, colour = continent, size = pop)) + geom_point(alpha = 0.5) + scale_x_log10()', 'ggplot(g1962, mapping = aes(x = gdpPercap, y = lifeExp, colour = continent, size = pop)) + geom_point(alpha = 0.5) + scale_x_log10()', 'ggplot(data = g1962, aes(x = gdpPercap, y = lifeExp, colour = continent, size = pop)) + geom_point(alpha = 0.5) + scale_x_log10()', 'ggplot(g1962, aes(x = gdpPercap, y = lifeExp, color = continent, size = pop)) + geom_point(alpha = 0.5) + scale_x_log10()', 'ggplot(data = g1962, mapping = aes(x = gdpPercap, y = lifeExp, color = continent, size = pop)) + geom_point(alpha = 0.5) + scale_x_log10()', 'ggplot(g1962, mapping = aes(x = gdpPercap, y = lifeExp, color = continent, size = pop)) + geom_point(alpha = 0.5) + scale_x_log10()', 'ggplot(data = g1962, aes(x = gdpPercap, y = lifeExp, color = continent, size = pop)) + geom_point(alpha = 0.5) + scale_x_log10()', 'ggplot(g1962, aes(gdpPercap, lifeExp, colour = continent, size = pop)) + geom_point(alpha = 0.5) + scale_x_log10()', 'ggplot(data = g1962, mapping = aes(gdpPercap, lifeExp, colour = continent, size = pop)) + geom_point(alpha = 0.5) + scale_x_log10()', 'ggplot(g1962, mapping = aes(gdpPercap, lifeExp, colour = continent, size = pop)) + geom_point(alpha = 0.5) + scale_x_log10()', 'ggplot(data = g1962, aes(gdpPercap, lifeExp, colour = continent, size = pop)) + geom_point(alpha = 0.5) + scale_x_log10()', 'ggplot(g1962, aes(gdpPercap, lifeExp, color = continent, size = pop)) + geom_point(alpha = 0.5) + scale_x_log10()', 'ggplot(data = g1962, mapping = aes(gdpPercap, lifeExp, color = continent, size = pop)) + geom_point(alpha = 0.5) + scale_x_log10()', 'ggplot(g1962, mapping = aes(gdpPercap, lifeExp, color = continent, size = pop)) + geom_point(alpha = 0.5) + scale_x_log10()', 'ggplot(data = g1962, aes(gdpPercap, lifeExp, color = continent, size = pop)) + geom_point(alpha = 0.5) + scale_x_log10()')
+  Hint: The same command with alpha = 0.5 inside the geom_point() brackets.
+- Class: text
+  Output: This is Rosling's chart for one year. Four columns of the table are on the page at once, as position, position, colour and size. Each was a choice, and each choice is a claim about what matters.
+- Class: text
+  Output: So far, one year. Whether the picture changed is the question that matters for policy. A second panel beside the first is the grammar's way to compare, and it needs two years in one table.
+- Class: cmd_question
+  Output: Keep two years, 1962 and 2007, in a new object called g2. filter() again, but a row is kept when its year is in a list of two, and the operator for that is %in%, so the condition reads year %in% c(1962, 2007). Write the whole line yourself.
+  CorrectAnswer: g2 <- filter(gapminder, year %in% c(1962, 2007))
+  AnswerTests: any_of_exprs('g2 <- filter(gapminder, year %in% c(1962, 2007))', 'g2 <- gapminder %>% filter(year %in% c(1962, 2007))', 'g2 <- filter(gapminder, year == 1962 | year == 2007)', 'g2 <- gapminder |> filter(year %in% c(1962, 2007))')
+  Hint: g2 <- filter(gapminder, year %in% c(1962, 2007)) with %in% between year and c(...).
+- Class: text
+  Output: The layer that does this is facet_wrap(). A facet is one panel. facet_wrap() draws the whole plot once for every value in a column, side by side, with the same axes in each panel. It is written with a tilde, the ~ key, in front of the column name, facet_wrap(~ year), which reads as panels by year. It goes on the end with another plus sign, like any layer.
+- Class: cmd_question
+  Output: 'Draw one panel per year: the plot of g2 with x = gdpPercap, y = lifeExp and colour = continent inside aes(), geom_point(), the log scale, and then the facet layer after one more plus sign.'
+  CorrectAnswer: ggplot(g2, aes(x = gdpPercap, y = lifeExp, colour = continent)) + geom_point() + scale_x_log10() + facet_wrap(~ year)
+  AnswerTests: any_of_exprs('ggplot(g2, aes(x = gdpPercap, y = lifeExp, colour = continent)) + geom_point() + scale_x_log10() + facet_wrap(~ year)', 'ggplot(data = g2, mapping = aes(x = gdpPercap, y = lifeExp, colour = continent)) + geom_point() + scale_x_log10() + facet_wrap(~ year)', 'ggplot(g2, mapping = aes(x = gdpPercap, y = lifeExp, colour = continent)) + geom_point() + scale_x_log10() + facet_wrap(~ year)', 'ggplot(data = g2, aes(x = gdpPercap, y = lifeExp, colour = continent)) + geom_point() + scale_x_log10() + facet_wrap(~ year)', 'ggplot(g2, aes(x = gdpPercap, y = lifeExp, color = continent)) + geom_point() + scale_x_log10() + facet_wrap(~ year)', 'ggplot(data = g2, mapping = aes(x = gdpPercap, y = lifeExp, color = continent)) + geom_point() + scale_x_log10() + facet_wrap(~ year)', 'ggplot(g2, mapping = aes(x = gdpPercap, y = lifeExp, color = continent)) + geom_point() + scale_x_log10() + facet_wrap(~ year)', 'ggplot(data = g2, aes(x = gdpPercap, y = lifeExp, color = continent)) + geom_point() + scale_x_log10() + facet_wrap(~ year)', 'ggplot(g2, aes(gdpPercap, lifeExp, colour = continent)) + geom_point() + scale_x_log10() + facet_wrap(~ year)', 'ggplot(data = g2, mapping = aes(gdpPercap, lifeExp, colour = continent)) + geom_point() + scale_x_log10() + facet_wrap(~ year)', 'ggplot(g2, mapping = aes(gdpPercap, lifeExp, colour = continent)) + geom_point() + scale_x_log10() + facet_wrap(~ year)', 'ggplot(data = g2, aes(gdpPercap, lifeExp, colour = continent)) + geom_point() + scale_x_log10() + facet_wrap(~ year)', 'ggplot(g2, aes(gdpPercap, lifeExp, color = continent)) + geom_point() + scale_x_log10() + facet_wrap(~ year)', 'ggplot(data = g2, mapping = aes(gdpPercap, lifeExp, color = continent)) + geom_point() + scale_x_log10() + facet_wrap(~ year)', 'ggplot(g2, mapping = aes(gdpPercap, lifeExp, color = continent)) + geom_point() + scale_x_log10() + facet_wrap(~ year)', 'ggplot(data = g2, aes(gdpPercap, lifeExp, color = continent)) + geom_point() + scale_x_log10() + facet_wrap(~ year)')
+  Hint: ggplot(g2, aes(x = gdpPercap, y = lifeExp, colour = continent)) + geom_point() + scale_x_log10() + facet_wrap(~ year)
+- Class: text
+  Output: Two panels, same axes, so the comparison is fair. By 2007 the cloud has moved up and to the right. On the averages, life expectancy in Africa went from 43.3 to 54.8 years, in Asia from 51.6 to 70.7, in Europe from 68.5 to 77.6. Asia closed most of its gap with Europe; Africa closed less of it. Whether the world got healthier as it got richer, and for whom, is a reading, and the chart is your evidence for it.
+- Class: text
+  Output: That is the grammar's way of adding a variable without adding an aesthetic. Colour put continent on the page; the facet put year on the page; and it turned a description into a comparison.
+- Class: text
+  Output: 'Now a different geom, for a different kind of claim: a change over time, as in Session 12. One country first.'
+- Class: cmd_question
+  Output: Keep one country, Japan, in a new object called japan. The same verb as for the year, with the country name in quotes. Try it before the hint.
+  CorrectAnswer: japan <- filter(gapminder, country == "Japan")
+  AnswerTests: any_of_exprs('japan <- filter(gapminder, country == "Japan")', 'japan <- gapminder %>% filter(country == "Japan")', 'japan <- gapminder |> filter(country == "Japan")')
+  Hint: japan <- filter(gapminder, country == "Japan") with the country name in quotes and two equals signs.
+- Class: cmd_question
+  Output: Points first. Draw a scatter plot of japan with year along the bottom and lifeExp up the side. You have written this template many times now; write it without looking.
+  CorrectAnswer: ggplot(japan, aes(x = year, y = lifeExp)) + geom_point()
+  AnswerTests: any_of_exprs('ggplot(japan, aes(x = year, y = lifeExp)) + geom_point()', 'ggplot(data = japan, mapping = aes(x = year, y = lifeExp)) + geom_point()', 'ggplot(japan, mapping = aes(x = year, y = lifeExp)) + geom_point()', 'ggplot(data = japan, aes(x = year, y = lifeExp)) + geom_point()', 'ggplot(japan, aes(year, lifeExp)) + geom_point()', 'ggplot(data = japan, mapping = aes(year, lifeExp)) + geom_point()', 'ggplot(japan, mapping = aes(year, lifeExp)) + geom_point()', 'ggplot(data = japan, aes(year, lifeExp)) + geom_point()')
+  Hint: ggplot(japan, aes(x = year, y = lifeExp)) + geom_point()
+- Class: cmd_question
+  Output: Now the same data and the same mapping with a different geom. The geom for a line is geom_line(). Write the plot again with that in place of geom_point().
+  CorrectAnswer: ggplot(japan, aes(x = year, y = lifeExp)) + geom_line()
+  AnswerTests: any_of_exprs('ggplot(japan, aes(x = year, y = lifeExp)) + geom_line()', 'ggplot(data = japan, mapping = aes(x = year, y = lifeExp)) + geom_line()', 'ggplot(japan, mapping = aes(x = year, y = lifeExp)) + geom_line()', 'ggplot(data = japan, aes(x = year, y = lifeExp)) + geom_line()', 'ggplot(japan, aes(year, lifeExp)) + geom_line()', 'ggplot(data = japan, mapping = aes(year, lifeExp)) + geom_line()', 'ggplot(japan, mapping = aes(year, lifeExp)) + geom_line()', 'ggplot(data = japan, aes(year, lifeExp)) + geom_line()')
+  Hint: The same command with geom_line() in place of geom_point().
+- Class: text
+  Output: 'Same data, same mapping, different mark, different claim. Points say: here are 12 observations, five years apart. A line says: life expectancy was a continuous process and these are moments on it. Japan went from 63.0 years in 1952 to 82.6 in 2007, and the line makes it look smooth; the points let you see the pace slow. The geom is the shape of the claim.'
+- Class: cmd_question
+  Output: Both at once. The line first, then the points on top, each after its own plus sign.
+  CorrectAnswer: ggplot(japan, aes(x = year, y = lifeExp)) + geom_line() + geom_point()
+  AnswerTests: any_of_exprs('ggplot(japan, aes(x = year, y = lifeExp)) + geom_line() + geom_point()', 'ggplot(data = japan, mapping = aes(x = year, y = lifeExp)) + geom_line() + geom_point()', 'ggplot(japan, mapping = aes(x = year, y = lifeExp)) + geom_line() + geom_point()', 'ggplot(data = japan, aes(x = year, y = lifeExp)) + geom_line() + geom_point()', 'ggplot(japan, aes(year, lifeExp)) + geom_line() + geom_point()', 'ggplot(data = japan, mapping = aes(year, lifeExp)) + geom_line() + geom_point()', 'ggplot(japan, mapping = aes(year, lifeExp)) + geom_line() + geom_point()', 'ggplot(data = japan, aes(year, lifeExp)) + geom_line() + geom_point()')
+  Hint: 'Two geoms, each after its own plus sign: + geom_line() + geom_point()'
+- Class: text
+  Output: Each plus sign is a layer, drawn in order, so the points sit on the line. Both geoms used the mapping from aes() in ggplot(), which is why neither needed its own.
+- Class: text
+  Output: Several countries on one plot. The mapping does the work again, with colour telling the lines apart and telling ggplot2 which points belong together.
+- Class: cmd_question
+  Output: Keep four countries, Japan, China, India and Vietnam, in a new object called asia4. Use the %in% operator from the two-years step, with the four names in quotes inside c().
+  CorrectAnswer: asia4 <- filter(gapminder, country %in% c("Japan", "China", "India", "Vietnam"))
+  AnswerTests: any_of_exprs('asia4 <- filter(gapminder, country %in% c("Japan", "China", "India", "Vietnam"))', 'asia4 <- gapminder %>% filter(country %in% c("Japan", "China", "India", "Vietnam"))', 'asia4 <- gapminder |> filter(country %in% c("Japan", "China", "India", "Vietnam"))')
+  Hint: asia4 <- filter(gapminder, country %in% c("Japan", "China", "India", "Vietnam")) with each name in quotes inside c().
+- Class: cmd_question
+  Output: Draw a line plot of asia4, year along the bottom, lifeExp up the side, with colour mapped to country. Everything in it you have typed before.
+  CorrectAnswer: ggplot(asia4, aes(x = year, y = lifeExp, colour = country)) + geom_line()
+  AnswerTests: any_of_exprs('ggplot(asia4, aes(x = year, y = lifeExp, colour = country)) + geom_line()', 'ggplot(data = asia4, mapping = aes(x = year, y = lifeExp, colour = country)) + geom_line()', 'ggplot(asia4, mapping = aes(x = year, y = lifeExp, colour = country)) + geom_line()', 'ggplot(data = asia4, aes(x = year, y = lifeExp, colour = country)) + geom_line()', 'ggplot(asia4, aes(x = year, y = lifeExp, color = country)) + geom_line()', 'ggplot(data = asia4, mapping = aes(x = year, y = lifeExp, color = country)) + geom_line()', 'ggplot(asia4, mapping = aes(x = year, y = lifeExp, color = country)) + geom_line()', 'ggplot(data = asia4, aes(x = year, y = lifeExp, color = country)) + geom_line()', 'ggplot(asia4, aes(year, lifeExp, colour = country)) + geom_line()', 'ggplot(data = asia4, mapping = aes(year, lifeExp, colour = country)) + geom_line()', 'ggplot(asia4, mapping = aes(year, lifeExp, colour = country)) + geom_line()', 'ggplot(data = asia4, aes(year, lifeExp, colour = country)) + geom_line()', 'ggplot(asia4, aes(year, lifeExp, color = country)) + geom_line()', 'ggplot(data = asia4, mapping = aes(year, lifeExp, color = country)) + geom_line()', 'ggplot(asia4, mapping = aes(year, lifeExp, color = country)) + geom_line()', 'ggplot(data = asia4, aes(year, lifeExp, color = country)) + geom_line()')
+  Hint: colour = country inside aes(), then + geom_line().
+- Class: text
+  Output: 'Four lines, a legend, and a story. China''s line rises from 1952 to 1957, falls to 44.5 years in 1962, then climbs by 14 years by 1967: the famine of 1959 to 1961 showing in a national statistic. Notice that with points only every five years, the line draws straight across what happened in between. Without colour = country, ggplot2 would have joined all four countries'' points into one zigzag, because it would not know they were separate series.'
+- Class: text
+  Output: A chart is read by someone who was not there when you made it. Column names are not labels, and the chart has no title. labs() is the layer for that.
+- Class: cmd_question
+  Output: 'Take the asia4 line plot and add a labs() layer with three arguments, each in quotes: title = "Life expectancy at birth, 1952 to 2007", x = "Year", y = "Years". Copy the three labels exactly.'
+  CorrectAnswer: ggplot(asia4, aes(x = year, y = lifeExp, colour = country)) + geom_line() + labs(title = "Life expectancy at birth, 1952 to 2007", x = "Year", y = "Years")
+  AnswerTests: any_of_exprs('ggplot(asia4, aes(x = year, y = lifeExp, colour = country)) + geom_line() + labs(title = "Life expectancy at birth, 1952 to 2007", x = "Year", y = "Years")', 'ggplot(data = asia4, mapping = aes(x = year, y = lifeExp, colour = country)) + geom_line() + labs(title = "Life expectancy at birth, 1952 to 2007", x = "Year", y = "Years")', 'ggplot(asia4, mapping = aes(x = year, y = lifeExp, colour = country)) + geom_line() + labs(title = "Life expectancy at birth, 1952 to 2007", x = "Year", y = "Years")', 'ggplot(data = asia4, aes(x = year, y = lifeExp, colour = country)) + geom_line() + labs(title = "Life expectancy at birth, 1952 to 2007", x = "Year", y = "Years")', 'ggplot(asia4, aes(x = year, y = lifeExp, color = country)) + geom_line() + labs(title = "Life expectancy at birth, 1952 to 2007", x = "Year", y = "Years")', 'ggplot(data = asia4, mapping = aes(x = year, y = lifeExp, color = country)) + geom_line() + labs(title = "Life expectancy at birth, 1952 to 2007", x = "Year", y = "Years")', 'ggplot(asia4, mapping = aes(x = year, y = lifeExp, color = country)) + geom_line() + labs(title = "Life expectancy at birth, 1952 to 2007", x = "Year", y = "Years")', 'ggplot(data = asia4, aes(x = year, y = lifeExp, color = country)) + geom_line() + labs(title = "Life expectancy at birth, 1952 to 2007", x = "Year", y = "Years")', 'ggplot(asia4, aes(year, lifeExp, colour = country)) + geom_line() + labs(title = "Life expectancy at birth, 1952 to 2007", x = "Year", y = "Years")', 'ggplot(data = asia4, mapping = aes(year, lifeExp, colour = country)) + geom_line() + labs(title = "Life expectancy at birth, 1952 to 2007", x = "Year", y = "Years")', 'ggplot(asia4, mapping = aes(year, lifeExp, colour = country)) + geom_line() + labs(title = "Life expectancy at birth, 1952 to 2007", x = "Year", y = "Years")', 'ggplot(data = asia4, aes(year, lifeExp, colour = country)) + geom_line() + labs(title = "Life expectancy at birth, 1952 to 2007", x = "Year", y = "Years")', 'ggplot(asia4, aes(year, lifeExp, color = country)) + geom_line() + labs(title = "Life expectancy at birth, 1952 to 2007", x = "Year", y = "Years")', 'ggplot(data = asia4, mapping = aes(year, lifeExp, color = country)) + geom_line() + labs(title = "Life expectancy at birth, 1952 to 2007", x = "Year", y = "Years")', 'ggplot(asia4, mapping = aes(year, lifeExp, color = country)) + geom_line() + labs(title = "Life expectancy at birth, 1952 to 2007", x = "Year", y = "Years")', 'ggplot(data = asia4, aes(year, lifeExp, color = country)) + geom_line() + labs(title = "Life expectancy at birth, 1952 to 2007", x = "Year", y = "Years")')
+  Hint: Add + labs(title = "Life expectancy at birth, 1952 to 2007", x = "Year", y = "Years") at the end, every label in quotes.
+- Class: text
+  Output: This title names the topic. In Task 3 your final figure needs a title that states your finding instead, such as China's life expectancy fell sharply in the early 1960s, then rose faster than India's. The axis labels tell the reader the units.
+- Class: cmd_question
+  Output: Save the last plot as a picture file. The function is ggsave(), and the one argument is the file name in quotes, asia4.png. It goes into the working directory.
+  CorrectAnswer: ggsave("asia4.png")
+  AnswerTests: omnitest(correctExpr='ggsave("asia4.png")')
+  Hint: ggsave("asia4.png") with the file name in quotes, ending in .png.
+- Class: cmd_question
+  Output: Check that it is there. List the files in the working directory.
+  CorrectAnswer: list.files()
+  AnswerTests: omnitest(correctExpr='list.files()')
+  Hint: list.files() with nothing inside the brackets.
+- Class: text
+  Output: asia4.png is in your folder. ggsave() saves whatever plot was drawn last, so draw, check, then save.
+- Class: text
+  Output: The moves. filter() to get the table you want, then ggplot() to name it, aes() to map columns to position, colour and size, a geom to choose the mark, a scale to decide how distance is read, a plus sign for every layer, facet_wrap() to compare panels, labs() to speak to the reader, ggsave() to keep it. Every chart in Task 3 is those moves in some order.
+- Class: text
+  Output: 'In the module''s words. The mapping is the frame: it decides what the chart can see at all. The geom is the shape of the claim: points, a line, panels. The scale decides which differences look big. The title and labels are for the reader, who was not in the room. Change any of them and the same table says something else.'
+- Class: figure
+  Output: This lesson is complete. Generate the code that shows you completed it.
+  Figure: finalcode.R
+  FigureType: new
+- Class: cmd_question
+  Output: Write your 8-digit UCL student number into completioncode(). For example, if your number were 12345678, you would type completioncode(12345678). Then take a screenshot that shows the command and the code it prints, for Task 3.
+  CorrectAnswer: completioncode(00000000)
+  AnswerTests: expr_uses_func("completioncode")
+  Hint: Type completioncode(YOURSTUDENTNUMBER), replacing the text with your actual student number.
+- Class: text
+  Output: Save that screenshot as StudentNumber_CA3_swirl.png for your Task 3 submission. Well done.

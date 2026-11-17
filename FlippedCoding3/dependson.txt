@@ -1,0 +1,4 @@
+tidyverse
+dplyr
+ggplot2
+gapminder
